@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .App-logo {
@@ -15,7 +20,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  width: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,4 +40,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.text{
+  position: absolute;
+  top: attr(data-y px);
+  left: attr(data-x px);
+
 }
