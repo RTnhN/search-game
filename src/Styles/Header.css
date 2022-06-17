@@ -1,0 +1,36 @@
+header{
+  background-color: #b94343;
+  height: 40px;
+  width: 100%;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header>#title{
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
+}
+header>button{
+  background-color:#b94343;
+  height: 100%;
+  border: none;
+  color: white;
+  padding: 1em;
+}
+
+header>button:first-of-type{
+  border-right: 1px solid #e5e5e5;
+}
+
+header>button:last-of-type{
+  border-left: 1px solid #e5e5e5;
+}
+
+
+header>button:hover{
+  background-color: hsl(0, 47%, 80%);
+}

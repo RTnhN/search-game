@@ -1,10 +1,14 @@
+.body{
+  width: 100%;
+}
+
 .App {
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  width: 100%
 }
 
 .App-logo {
@@ -20,7 +24,7 @@
 
 .App-header {
   background-color: #282c34;
-  width: 1000px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,7 +48,28 @@
 
 .text{
   position: absolute;
-  top: attr(data-y px);
-  left: attr(data-x px);
+  border: 1px solid black;
+  background-color: white;
+}
 
+#selectionBox{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+#selectionBox>button{
+  background-color: white;
+  border:1px solid black;
+  outline:none;
+  color: black;
+  font-size: 2rem;
+}
+
+.found{
+  text-decoration: line-through;
+}
+
+.blur{ 
+  filter: blur(15px);
 }
