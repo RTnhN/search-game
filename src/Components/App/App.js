@@ -7,6 +7,7 @@ import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import SelectionBox from '../SelectionBox/SelectionBox';
 import Header from '../Header/Header';
+import ThingsSidebar from '../ThingsSidebar/ThingsSidebar';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -23,6 +24,8 @@ function App() {
   const [things, setThings] = useState([]);
   const [foundThings, setFoundThings] = useState([]);
   const [boxOpen, setBoxOpen] = useState(false);
+  const [imagesOpen, setImagesOpen] = useState(false);
+  const [thingsOpen, setThingsOpen] = useState(false);
 
   function openMenu(event) {
     if (gameParams.gameOn) {
@@ -69,7 +72,6 @@ function App() {
           return foundThings
         }))
       }
-      console.log(result.data.found);
       setBoxOpen(false);
     }
   }
@@ -101,13 +103,20 @@ function App() {
     img.src = url;
   }
 
+  function toggleImages() {
+    setImagesOpen((prevState => !prevState));
+  }
+
+  function toggleThings() {
+    setThingsOpen((prevState => !prevState));
+  }
+
   return (
     <div className="App">
-      <Header />
-      <button onClick={startGame}>{gameParams.gameOn ? "Find all the things!" : "Start"}</button>
+      <Header imagesOpen={imagesOpen} thingsOpen={thingsOpen} toggleImages={toggleImages} toggleThings={toggleThings} />
       <img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn ? "App-header" : "App-header blur"} />
       {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
-
+      {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} />}
     </div>
   );
 }
