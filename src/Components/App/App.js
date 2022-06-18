@@ -110,6 +110,7 @@ function App() {
 
   function startGame() {
     setGameParams({ gameOn: true, time: Date.now() });
+    checkerFunction({ "thing": things[0], "x": -1, "y": -1 , "img": selectedImage}).then(result => console.log("initialized"));
   }
 
   function endGame() {
