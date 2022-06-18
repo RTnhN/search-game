@@ -20,10 +20,12 @@ function App() {
 
   const [img, setImg] = useState("");
   const [xy, setxy] = useState({ x: 0, y: 0 });
+  const [screenxy, setScreenxy] = useState({ x: 0, y: 0 });
   const [boxLoc, setBoxLoc] = useState({ top: 0, left: 0 });
   const [gameParams, setGameParams] = useState({ gameOn: false, time: 0 });
   const [things, setThings] = useState([]);
   const [foundThings, setFoundThings] = useState([]);
+  const [foundThingsPointList, setFoundThingsPointList] = useState([]);
   const [boxOpen, setBoxOpen] = useState(false);
   const [imagesOpen, setImagesOpen] = useState(false);
   const [thingsOpen, setThingsOpen] = useState(false);
@@ -38,6 +40,7 @@ function App() {
       const x = (event.pageX - boundingRect.left - window.scrollX) / (boundingRect.width);
       const y = (event.pageY - boundingRect.top - window.scrollY) / (boundingRect.height);
       setxy({ x: x, y: y });
+      setScreenxy({ x: event.pageX, y: event.pageY });
       const longestThing = things.reduce((prev, curr) => curr.length > prev.length ? curr : prev)
       let sideFactor = 10;
       if (x * boundingRect.width > boundingRect.width - longestThing.length * 10) {
@@ -56,7 +59,6 @@ function App() {
     if (Math.sqrt((x - xy.x) ** 2 + (y - xy.y) ** 2) > FENCE_RADIUS && target.parentElement !== document.getElementById("selectionBox")) {
       setBoxOpen(false);
     }
-
   }
 
   async function checkGuess(event) {
@@ -74,7 +76,11 @@ function App() {
           }
           return foundThings
         }))
+        setFoundThingsPointList(prevState => {
+          return (prevState.length === things.length -1) ? [] : [...prevState, screenxy];
+        });
       }
+  
       setBoxOpen(false);
     }
   }
@@ -135,6 +141,9 @@ function App() {
       {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
       {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} />}
       {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} />}
+      <div id="foundThingsMarkerContainer">
+        {foundThingsPointList.map((point, index) => <p key={index} style={{top:point.y-24, left:point.x-12}} data-text={foundThings[index]}>✔</p>)}
+      </div>
     </div>
   );
 }
