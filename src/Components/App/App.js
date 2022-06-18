@@ -126,7 +126,12 @@ function App() {
   return (
     <div className="App">
       <Header imagesOpen={imagesOpen} thingsOpen={thingsOpen} toggleImages={toggleImages} toggleThings={toggleThings} />
-      <div id="imgContainer"><img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn ? "App-header" : "App-header blur"} /></div>
+      <div id="imgContainer">
+      { img==="" 
+      ? <p>Welcome to search game! The goal of the game is to find all the things in the image the fastest. Select an image on the left sidebar to get started. </p> 
+      : <img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn ? "App-header" : "App-header blur"} />
+      }
+      </div>
       {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
       {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} />}
       {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} />}
