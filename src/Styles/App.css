@@ -105,6 +105,9 @@ font-size: 1.5rem;
   padding: .5em 1em;
 }
 
+.blurText{
+  filter: blur(5px);
+}
 
 /* Main Image */
 

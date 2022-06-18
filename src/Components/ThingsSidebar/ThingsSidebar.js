@@ -10,7 +10,7 @@ function ThingsSidebar(props) {
           if (props.foundThings.includes(thing)) {
             return <p key={thing} className="found">{thing}</p>;
           } else {
-            return <p key={thing}>{thing}</p>;
+            return <p key={thing} className={props.className}>{thing}</p>;
           }
         }
         )}
