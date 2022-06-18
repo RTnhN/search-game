@@ -28,6 +28,7 @@ function App() {
   const [imagesOpen, setImagesOpen] = useState(false);
   const [thingsOpen, setThingsOpen] = useState(false);
   const [images, setImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState("");
 
   function openMenu(event) {
     if (gameParams.gameOn) {
@@ -61,7 +62,7 @@ function App() {
   async function checkGuess(event) {
     const name = event.target.dataset.name;
     if (!foundThings.includes(name)) {
-      const result = await checkerFunction({ "thing": name, "x": xy.x, "y": xy.y , "img": "Texas"});
+      const result = await checkerFunction({ "thing": name, "x": xy.x, "y": xy.y , "img": selectedImage});
       if (result.data.found) {
         setFoundThings((prevState => {
           let foundThings = [...prevState, name];
@@ -82,6 +83,7 @@ function App() {
 
   async function loadImage(event) {
     const docId = event.target.dataset.name;
+    setSelectedImage(docId);
     const docRef = doc(db, "Imgs", docId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
