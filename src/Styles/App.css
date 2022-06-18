@@ -50,11 +50,42 @@ header>button:hover{
   background-color: hsl(0, 47%, 80%);
 }
 
+/* Images Sidebar */
+#imagesSidebar{
+  grid-area: ImagesSidebar;
+  background-color: hsl(0, 0%, 50%);
+  height: 100%;
+  width: 12rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#imagesSidebar>h2{
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
+}
+
+#imagesSidebar>ul{
+  list-style: none;
+}
+
+#imagesSidebar button{
+  background-color: hsl(0, 0%, 50%);
+  border: 1px solid white;
+  color: white;
+  padding: .5em 1em;
+  margin: .5rem 0rem;
+}
+
+
 /* Things Sidebar */
 
 #thingsSidebar{
   grid-area: thingsSidebar;
-  background-color: hsl(0, 0%, 50%)
+  background-color: hsl(0, 0%, 50%);
+  width: 12rem;
 }
 #thingsSidebar>h2{
   font-size: 3rem;
