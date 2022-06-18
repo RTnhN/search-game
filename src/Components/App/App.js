@@ -2,12 +2,13 @@ import '../../Styles/App.css';
 import { useState, useEffect } from 'react';
 import firebaseConfig from '../../firebaseConfig';
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import SelectionBox from '../SelectionBox/SelectionBox';
 import Header from '../Header/Header';
 import ThingsSidebar from '../ThingsSidebar/ThingsSidebar';
+import ImagesSidebar from '../ImagesSidebar/ImagesSidebar';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -26,6 +27,7 @@ function App() {
   const [boxOpen, setBoxOpen] = useState(false);
   const [imagesOpen, setImagesOpen] = useState(false);
   const [thingsOpen, setThingsOpen] = useState(false);
+  const [images, setImages] = useState([]);
 
   function openMenu(event) {
     if (gameParams.gameOn) {
@@ -59,7 +61,7 @@ function App() {
   async function checkGuess(event) {
     const name = event.target.dataset.name;
     if (!foundThings.includes(name)) {
-      const result = await checkerFunction({ "thing": name, "x": xy.x, "y": xy.y });
+      const result = await checkerFunction({ "thing": name, "x": xy.x, "y": xy.y , "img": "Texas"});
       if (result.data.found) {
         setFoundThings((prevState => {
           let foundThings = [...prevState, name];
@@ -75,11 +77,12 @@ function App() {
       setBoxOpen(false);
     }
   }
+  // eslint-disable-next-line
+  useEffect(() => { getImgNames();}, []);
 
-  useEffect(() => { getData() }, []);
-
-  async function getData() {
-    const docRef = doc(db, "Imgs", "Img");
+  async function loadImage(event) {
+    const docId = event.target.dataset.name;
+    const docRef = doc(db, "Imgs", docId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = docSnap.data();
@@ -88,6 +91,13 @@ function App() {
       preloadImage(url);
       setImg(url);
     }
+  }
+
+  async function getImgNames() {
+    const collectionRef = collection(db, "Imgs");
+    const docsSnap = await getDocs(collectionRef);
+    const images = docsSnap.docs.map(img => img.id);
+    setImages(images);
   }
 
   function startGame() {
@@ -117,6 +127,7 @@ function App() {
       <div id="imgContainer"><img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn ? "App-header" : "App-header blur"} /></div>
       {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
       {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} />}
+      {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} />}
     </div>
   );
 }

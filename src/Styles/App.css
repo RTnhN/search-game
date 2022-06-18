@@ -3,7 +3,7 @@
   display: grid;
   width: 100%;
   min-height: 100vh;
-  grid-template-columns: 15rem 1fr 15rem;
+  grid-template-columns: auto 1fr auto;
   grid-template-rows: max-content auto;
   grid-template-areas:
     "header header header"
@@ -120,5 +120,4 @@ font-size: 1.5rem;
 
 .blur{ 
   filter: blur(15px);
-  transform: scale(.95);
 }

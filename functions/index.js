@@ -7,7 +7,7 @@ const db = admin.firestore();
 // https://firebase.google.com/docs/functions/write-firebase-functions
 
 exports.helloWorld = functions.https.onCall( async (data, context) => {
-  const allItemData = await db.collection("Imgs").doc("Img").get();
+  const allItemData = await db.collection("Imgs").doc(data.img).get();
   const itemData = allItemData.data().things
       .find((thing) => thing.name === data.thing);
   functions.logger.log(allItemData.data());
