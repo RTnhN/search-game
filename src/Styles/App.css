@@ -77,8 +77,13 @@ font-size: 1.5rem;
 
 /* Main Image */
 
-.App>img{
+#imgContainer{
   grid-area: main;
+  width: 100%;
+  overflow: hidden;
+}
+
+#imgContainer>img{
   background-color: #282c34;
   width: 100%;
   display: flex;

@@ -114,7 +114,7 @@ function App() {
   return (
     <div className="App">
       <Header imagesOpen={imagesOpen} thingsOpen={thingsOpen} toggleImages={toggleImages} toggleThings={toggleThings} />
-      <img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn ? "App-header" : "App-header blur"} />
+      <div id="imgContainer"><img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn ? "App-header" : "App-header blur"} /></div>
       {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
       {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} />}
     </div>
