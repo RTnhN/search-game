@@ -96,6 +96,7 @@ function App() {
       const data = docSnap.data();
       const url = await getDownloadURL(ref(storage, data.URLPath));
       setImg(url);
+      setThings(data.things.map((thing) => thing.name));
     }
   }
 
