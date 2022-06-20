@@ -94,9 +94,7 @@ function App() {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = docSnap.data();
-      setThings(data.things.map((thing) => thing.name));
       const url = await getDownloadURL(ref(storage, data.URLPath));
-      preloadImage(url);
       setImg(url);
     }
   }
@@ -106,6 +104,7 @@ function App() {
     const docsSnap = await getDocs(collectionRef);
     const images = docsSnap.docs.map(img => img.id);
     setImages(images);
+    docsSnap.docs.forEach(img => preloadImage(img.URLPath))
   }
 
   function startGame() {
