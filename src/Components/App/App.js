@@ -68,7 +68,7 @@ function App() {
       if (result.data.found) {
         setFoundThings((prevState => {
           let foundThings = [...prevState, name];
-          if (foundThings.length === things.length) {
+          if (foundThings.every(thing => things.includes(thing)) && foundThings.length >= things.length) {
             setBoxOpen(false);
             alert(`You found all the things in ${(Date.now() - gameParams.time) / 1000} seconds`);
             foundThings = [];
