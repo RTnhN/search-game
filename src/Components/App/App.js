@@ -9,6 +9,7 @@ import SelectionBox from '../SelectionBox/SelectionBox';
 import Header from '../Header/Header';
 import ThingsSidebar from '../ThingsSidebar/ThingsSidebar';
 import ImagesSidebar from '../ImagesSidebar/ImagesSidebar';
+import GameStatusBar from '../GameStatusBar/GameStatusBar';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -22,7 +23,7 @@ function App() {
   const [xy, setxy] = useState({ x: 0, y: 0 });
   const [screenxy, setScreenxy] = useState({ x: 0, y: 0 });
   const [boxLoc, setBoxLoc] = useState({ top: 0, left: 0 });
-  const [gameParams, setGameParams] = useState({ gameOn: false, time: 0 });
+  const [gameParams, setGameParams] = useState({ gameOn: false, startTime:0 , time: 0, gameFinished:false });
   const [things, setThings] = useState([]);
   const [foundThings, setFoundThings] = useState([]);
   const [foundThingsPointList, setFoundThingsPointList] = useState([]);
@@ -31,6 +32,8 @@ function App() {
   const [thingsOpen, setThingsOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
+  const [name, setName] = useState("Enter Name Here");
+  const [intervalRef, setIntervalRef] = useState(null);
 
   function openMenu(event) {
     if (gameParams.gameOn) {
@@ -70,7 +73,6 @@ function App() {
           let foundThings = [...prevState, name];
           if (foundThings.every(thing => things.includes(thing)) && foundThings.length >= things.length) {
             setBoxOpen(false);
-            alert(`You found all the things in ${(Date.now() - gameParams.time) / 1000} seconds`);
             foundThings = [];
             endGame();
           }
@@ -109,12 +111,21 @@ function App() {
   }
 
   function startGame() {
-    setGameParams({ gameOn: true, time: Date.now() });
+    if (img === ""){
+      alert("Please select an image before you start the game");
+    } else {
+    setGameParams((prevState) => ({...prevState,  gameOn: true, startTime: Date.now(), gameFinished:false }));
     checkerFunction({ "thing": things[0], "x": -1, "y": -1 , "img": selectedImage}).then(result => console.log("initialized"));
+    const intervalRef = setInterval(() => {
+        setGameParams((prevState) => ({ ...prevState, time: Date.now() - prevState.startTime }));
+    }, 750);
+    setIntervalRef(intervalRef);
+    }
   }
 
   function endGame() {
-    setGameParams((prevState) => ({ gameOn: false, time: Date.now() - prevState.time }));
+    setGameParams((prevState) => ({startTime:0 , gameOn: false, time: Date.now() - prevState.startTime, gameFinished:true}));
+    clearInterval(intervalRef);
   }
 
   function preloadImage(url) {
@@ -130,17 +141,27 @@ function App() {
     setThingsOpen((prevState => !prevState));
   }
 
+  function updateName(event){
+    const name = event.target.value;
+    setName(name);
+  }
+
+  function saveTime(event) {
+    alert("time saved");
+  }
+
   return (
     <div className="App">
       <Header imagesOpen={imagesOpen} thingsOpen={thingsOpen} toggleImages={toggleImages} toggleThings={toggleThings} />
+      <GameStatusBar startGame={startGame} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
       <div id="imgContainer">
       { img==="" 
       ? <p>Welcome to search game! The goal of the game is to find all the things in the image the fastest. Select an image on the left sidebar to get started. </p> 
-      : <img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn ? "App-header" : "App-header blur"} />
+      : <img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn || gameParams.gameFinished ? "App-header" : "App-header blur"} />
       }
       </div>
       {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
-      {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} className={gameParams.gameOn ? "" : "blurText"} />}
+      {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} className={gameParams.gameOn || gameParams.gameFinished ? "" : "blurText"} />}
       {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} />}
       <div id="foundThingsMarkerContainer">
         {foundThingsPointList.map((point, index) => <p key={index} style={{top:point.y-24, left:point.x-12}} data-text={foundThings[index]}>✔</p>)}

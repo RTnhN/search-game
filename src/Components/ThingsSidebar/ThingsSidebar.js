@@ -14,7 +14,6 @@ function ThingsSidebar(props) {
           }
         }
         )}
-        <button onClick={props.startGame}>{props.gameParams.gameOn ? "Find all the things!" : "Start"}</button>
       </div>
     </div>
   );

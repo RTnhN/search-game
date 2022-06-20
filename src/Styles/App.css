@@ -4,9 +4,10 @@
   width: 100%;
   min-height: 100vh;
   grid-template-columns: auto 1fr auto;
-  grid-template-rows: max-content auto;
+  grid-template-rows: max-content auto auto;
   grid-template-areas:
     "header header header"
+    "ImagesSidebar gameStatusBar thingsSidebar"
     "ImagesSidebar main thingsSidebar";
 }
 
@@ -110,6 +111,55 @@ header>button:hover {
 .blurText {
   filter: blur(5px);
 }
+
+/* Game Status Bar */
+
+#gameStatusBar{
+  grid-area: gameStatusBar;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: hsl(0, 0%, 50%);
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+
+}
+
+#gameStatusBarContainer{
+
+  display: grid;
+  grid-template-columns:  max-content repeat(4, 1fr);
+  align-items: center;  
+}
+
+#helpButton{
+  background:none;
+  border:none;
+  color:white;
+}
+
+#helpText{
+  position: absolute;
+  top: 5rem;
+  width: 200px;
+  background-color: hsl(0, 0%, 50%);
+  color: white;
+  padding: 1em;
+  border: 1px solid white;
+}
+
+#helpText>span{
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.normalTimer{
+  color: white;
+}
+.finishedTimer{
+  color:greenyellow
+}
+
 
 /* Main Image */
 
