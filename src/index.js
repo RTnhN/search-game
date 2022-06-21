@@ -10,8 +10,8 @@ root.render(
   <React.StrictMode>
     <BrowserRouter basename={`/${process.env.PUBLIC_URL}`}>
       <Routes>
-        <Route path="/search-game/admin" element={<Admin />} />
-        <Route path="/search-game" element={<App />} />
+        <Route path="" element={<App />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
