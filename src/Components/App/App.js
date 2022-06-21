@@ -94,7 +94,7 @@ function App() {
       const data = docSnap.data();
       const url = await getDownloadURL(ref(storage, data.URLPath));
       setImg(url);
-      setThings(data.things.map((thing) => thing.name));
+      setThings(data.things.map(thing => thing.name));
     }
     setFoundThingsPointList([]);
     setFoundThings([]);
@@ -134,7 +134,7 @@ function App() {
   }
 
   function preloadImage(url) {
-    var img = new Image();
+    const img = new Image();
     img.src = url;
   }
 
