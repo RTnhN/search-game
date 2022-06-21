@@ -115,6 +115,15 @@ function App() {
     })
   }
 
+  function handleMainButtonClick(event){
+    const action = event.target.dataset.state;
+    if (action === "Start"){
+      startGame();
+    } else if (action === "Reset") {
+      resetGame();
+    }
+  }
+
   function startGame() {
     if (img === ""){
       alert("Please select an image before you start the game");
@@ -133,6 +142,13 @@ function App() {
   function endGame() {
     setGameParams((prevState) => ({startTime:0 , gameOn: false, time: Date.now() - prevState.startTime, gameFinished:true}));
     clearInterval(intervalRef);
+  }
+
+  function resetGame() {
+    setGameParams({startTime:0 , gameOn: false, time: 0, gameFinished:false});
+    clearInterval(intervalRef);
+    setFoundThingsPointList([]);
+    setFoundThings([]);
   }
 
   function preloadImage(url) {
@@ -182,7 +198,7 @@ function App() {
       <div id="foundThingsMarkerContainer">
         {foundThingsPointList.map((point, index) => <p key={index} style={{top:point.y-24, left:point.x-12}} data-text={foundThings[index]}>✔</p>)}
       </div>
-    <GameStatusBar startGame={startGame} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
+    <GameStatusBar handleMainButtonClick={handleMainButtonClick} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
     </div>
   );
 }
