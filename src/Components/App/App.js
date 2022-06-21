@@ -69,12 +69,11 @@ function App() {
     const name = event.target.dataset.name;
     if (!foundThings.includes(name)) {
       const result = await checkerFunction({ "thing": name, "x": xy.x, "y": xy.y , "img": selectedImage});
+      setBoxOpen(false);
       if (result.data.found) {
         setFoundThings((prevState => {
           let foundThings = [...prevState, name];
           if (foundThings.every(thing => things.includes(thing)) && foundThings.length >= things.length) {
-            setBoxOpen(false);
-            foundThings = [];
             endGame();
           }
           return foundThings
