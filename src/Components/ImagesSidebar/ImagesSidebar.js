@@ -9,7 +9,7 @@ function ImagesSidebar(props) {
         {props.images.map((image) => {
           return (
             <li key={nanoid()}>
-              <button data-name={image} onClick={props.loadImage}>{image}</button> 
+              <button data-name={image} className={(props.selectedImage === image) ? "active" : ""} onClick={props.loadImage}>{image}</button> 
             </li>
           );
         }
