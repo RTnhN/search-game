@@ -22,8 +22,11 @@ return (
       {helpOpen && <div id="helpText"><span>Help</span> <br/> <hr/> Find all the things in the picture by clicking on the thing and selecting it in the menu. Try to be fast since it is timed.</div>}
       <button id= "mainButton" data-state={buttonText} onClick={props.handleMainButtonClick}>{buttonText}</button>
       <p id="timer" className={timeStyle}>{time}</p>
-      <input type="text" value={props.name} onChange={props.updateName} />
-      <button onClick={props.saveTime}>Save Time</button>
+      <div id="playerNameContainer">
+        <label id="playerNameLabel" htmlFor="playerName">Player Name</label>
+        <input id="playerName" type="text" value={props.name} onChange={props.updateName} />
+      </div>
+      <button id="saveTimeButton" onClick={props.saveTime}>Save Time</button>
     </div>
   </div>
 );

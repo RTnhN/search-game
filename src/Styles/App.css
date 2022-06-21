@@ -164,11 +164,9 @@ header>button:hover {
   background-color: hsl(0, 0%, 50%);
   border-left: 1px solid white;
   border-right: 1px solid white;
-
 }
 
 #gameStatusBarContainer{
-
   display: grid;
   grid-template-columns:  max-content repeat(4, 1fr);
   align-items: center;  
@@ -201,6 +199,40 @@ header>button:hover {
   color:greenyellow
 }
 
+#mainButton{
+width: 5em;
+background-color: hsl(0, 0%, 50%);
+color: white;
+border: 1px solid white;
+align-self: center;
+justify-self: center;
+}
+
+#playerNameContainer{
+  display:flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+#playerNameLabel{
+  color: white;
+  font-size: .75rem;
+  white-space: nowrap;
+}
+
+#playerName{
+  width: 5rem;
+}
+
+#saveTimeButton{
+  width: 7em;
+  background-color: hsl(0, 0%, 50%);
+  color: white;
+  border: 1px solid white;
+  align-self: center;
+  justify-self: center;
+}
 
 /* Main Image */
 
