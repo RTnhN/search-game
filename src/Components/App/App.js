@@ -2,7 +2,7 @@ import '../../Styles/App.css';
 import { useState, useEffect } from 'react';
 import firebaseConfig from '../../firebaseConfig';
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import SelectionBox from '../SelectionBox/SelectionBox';
@@ -34,6 +34,7 @@ function App() {
   const [selectedImage, setSelectedImage] = useState("");
   const [name, setName] = useState("Enter Name Here");
   const [intervalRef, setIntervalRef] = useState(null);
+  const [docsSnapshot, setDocsSnapshot] = useState(null);
 
   function openMenu(event) {
     if (gameParams.gameOn) {
@@ -90,10 +91,9 @@ function App() {
   useEffect(() => { getImgNames();}, []);
 
   async function loadImage(event) {
-    const docId = event.target.dataset.name;
-    setSelectedImage(docId);
-    const docRef = doc(db, "Imgs", docId);
-    const docSnap = await getDoc(docRef);
+    const imgName = event.target.dataset.name;
+    setSelectedImage(imgName);
+    const docSnap = docsSnapshot.docs.find(doc => doc.id === imgName);
     if (docSnap.exists()) {
       const data = docSnap.data();
       const url = await getDownloadURL(ref(storage, data.URLPath));
@@ -105,9 +105,13 @@ function App() {
   async function getImgNames() {
     const collectionRef = collection(db, "Imgs");
     const docsSnap = await getDocs(collectionRef);
+    setDocsSnapshot(docsSnap);
     const images = docsSnap.docs.map(img => img.id);
     setImages(images);
-    docsSnap.docs.forEach(img => preloadImage(img.URLPath))
+    docsSnap.docs.forEach(async (img) => {
+      const url = await getDownloadURL(ref(storage, img.data().URLPath));  
+      preloadImage(url)
+    })
   }
 
   function startGame() {
