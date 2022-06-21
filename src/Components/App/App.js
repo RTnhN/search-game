@@ -78,11 +78,8 @@ function App() {
           }
           return foundThings
         }))
-        setFoundThingsPointList(prevState => {
-          return (prevState.length === things.length -1) ? [] : [...prevState, screenxy];
-        });
+        setFoundThingsPointList(prevState => [...prevState, screenxy]);
       }
-  
       setBoxOpen(false);
     }
   }
@@ -99,6 +96,9 @@ function App() {
       setImg(url);
       setThings(data.things.map((thing) => thing.name));
     }
+    setFoundThingsPointList([]);
+    setFoundThings([]);
+    setGameParams({startTime:0 , gameOn: false, time: 0, gameFinished:false});
   }
 
   async function getImgNames() {
@@ -123,6 +123,8 @@ function App() {
         setGameParams((prevState) => ({ ...prevState, time: Date.now() - prevState.startTime }));
     }, 750);
     setIntervalRef(intervalRef);
+    setFoundThingsPointList([]);
+    setFoundThings([]);
     }
   }
 
