@@ -170,7 +170,6 @@ function App() {
   return (
     <div className="App">
       <Header imagesOpen={imagesOpen} thingsOpen={thingsOpen} toggleImages={toggleImages} toggleThings={toggleThings} />
-      <GameStatusBar startGame={startGame} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
       <div id="imgContainer">
       { img==="" 
       ? <p>Welcome to search game! The goal of the game is to find all the things in the image the fastest. Select an image on the left sidebar to get started. </p> 
@@ -183,6 +182,7 @@ function App() {
       <div id="foundThingsMarkerContainer">
         {foundThingsPointList.map((point, index) => <p key={index} style={{top:point.y-24, left:point.x-12}} data-text={foundThings[index]}>✔</p>)}
       </div>
+    <GameStatusBar startGame={startGame} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
     </div>
   );
 }
