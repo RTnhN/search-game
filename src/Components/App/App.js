@@ -2,7 +2,7 @@ import '../../Styles/App.css';
 import { useState, useEffect } from 'react';
 import firebaseConfig from '../../firebaseConfig';
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, updateDoc, arrayUnion, doc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import SelectionBox from '../SelectionBox/SelectionBox';
@@ -35,6 +35,7 @@ function App() {
   const [name, setName] = useState("Enter Name Here");
   const [intervalRef, setIntervalRef] = useState(null);
   const [docsSnapshot, setDocsSnapshot] = useState(null);
+  const [selectedImageWinners, setSelectedImageWinners] = useState([]);
 
   function openMenu(event) {
     if (gameParams.gameOn) {
@@ -95,6 +96,7 @@ function App() {
       const url = await getDownloadURL(ref(storage, data.URLPath));
       setImg(url);
       setThings(data.things.map(thing => thing.name));
+      setSelectedImageWinners(data.winners === undefined ? [] : data.winners);
     }
     setFoundThingsPointList([]);
     setFoundThings([]);
@@ -151,8 +153,18 @@ function App() {
     setName(name);
   }
 
-  function saveTime(event) {
-    alert("time saved");
+  async function saveTime(event) {
+    if (gameParams.time > 0) {
+      if (selectedImageWinners.every(winner => winner.name !== name)){
+        const docRef = doc(db, "Imgs", selectedImage);
+        await updateDoc(docRef, { "winners": arrayUnion({ "name": name, "time": gameParams.time }) });
+        setSelectedImageWinners(prevState => [...prevState, { "name": name, "time": gameParams.time }]);
+      } else {
+        alert("You need to pick a different name");
+      }
+  } else {
+    alert("nice try trying to save your time with zero time");
+  }
   }
 
   return (
@@ -166,7 +178,7 @@ function App() {
       }
       </div>
       {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
-      {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} className={gameParams.gameOn || gameParams.gameFinished ? "" : "blurText"} />}
+      {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} className={gameParams.gameOn || gameParams.gameFinished ? "" : "blurText"} winners={selectedImageWinners} />}
       {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} />}
       <div id="foundThingsMarkerContainer">
         {foundThingsPointList.map((point, index) => <p key={index} style={{top:point.y-24, left:point.x-12}} data-text={foundThings[index]}>✔</p>)}
