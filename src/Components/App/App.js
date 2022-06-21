@@ -175,6 +175,7 @@ function App() {
         const docRef = doc(db, "Imgs", selectedImage);
         await updateDoc(docRef, { "winners": arrayUnion({ "name": name, "time": gameParams.time }) });
         setSelectedImageWinners(prevState => [...prevState, { "name": name, "time": gameParams.time }]);
+        alert(`Time saved, ${name}`);
       } else {
         alert("You need to pick a different name");
       }
