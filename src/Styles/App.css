@@ -281,6 +281,7 @@ justify-self: center;
 
 .blur {
   filter: blur(15px);
+  transform: scale(1.03);
 }
 
 #foundThingsMarkerContainer>p {
