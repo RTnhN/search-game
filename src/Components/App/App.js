@@ -155,11 +155,6 @@ function App() {
     setFoundThings([]);
   }
 
-  function preloadImage(url) {
-    const img = new Image();
-    img.src = url;
-  }
-
   function toggleImages() {
     setImagesOpen((prevState => !prevState));
   }
@@ -205,6 +200,11 @@ function App() {
       <GameStatusBar handleMainButtonClick={handleMainButtonClick} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
     </div>
   );
+}
+
+function preloadImage(url) {
+  const img = new Image();
+  img.src = url;
 }
 
 export default App;
