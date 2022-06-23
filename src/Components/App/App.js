@@ -18,7 +18,6 @@ const functions = getFunctions(app);
 const checkerFunction = httpsCallable(functions, 'helloWorld');
 
 function App() {
-
   const [img, setImg] = useState("");
   const [xy, setxy] = useState({ x: 0, y: 0 });
   const [boxLoc, setBoxLoc] = useState({ top: 0, left: 0 });
@@ -26,6 +25,7 @@ function App() {
   const [things, setThings] = useState([]);
   const [foundThings, setFoundThings] = useState([]);
   const [foundThingsPointList, setFoundThingsPointList] = useState([]);
+  const [remainingThings, setRemainingThings] = useState([]);
   const [boxOpen, setBoxOpen] = useState(false);
   const [imagesOpen, setImagesOpen] = useState(false);
   const [thingsOpen, setThingsOpen] = useState(false);
@@ -73,6 +73,7 @@ function App() {
       if (result.data.found) {
         const percentxy = {x:Math.floor(xy.x*100), y:Math.floor(xy.y*100)}
         setFoundThings(prevState => [...prevState, name]);
+        setRemainingThings(prevState => prevState.filter(thing => thing !== name));
         setFoundThingsPointList(prevState => [...prevState, percentxy]);
         setTimeLastItem(Date.now());
       }
@@ -92,6 +93,7 @@ function App() {
       const url = await getDownloadURL(ref(storage, data.URLPath));
       setImg(url);
       setThings(data.things.map(thing => thing.name));
+      setRemainingThings(data.things.map(thing => thing.name));
       setSelectedImageWinners(data.winners === undefined ? [] : data.winners);
     }
     setFoundThingsPointList([]);
@@ -196,7 +198,7 @@ function App() {
       </div>
       {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} className={gameParams.gameOn || gameParams.gameFinished ? "" : "blurText"} winners={selectedImageWinners} />}
       {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} selectedImage={selectedImage} />}
-      {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
+      {boxOpen && <SelectionBox loc={boxLoc} remainingThings={remainingThings} checkGuess={checkGuess} />}
       <GameStatusBar handleMainButtonClick={handleMainButtonClick} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
     </div>
   );
