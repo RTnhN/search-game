@@ -36,6 +36,7 @@ function App() {
   const [intervalRef, setIntervalRef] = useState(null);
   const [docsSnapshot, setDocsSnapshot] = useState(null);
   const [selectedImageWinners, setSelectedImageWinners] = useState([]);
+  const [timeLastItem, setTimeLastItem] = useState(0);
 
   function openMenu(event) {
     if (gameParams.gameOn) {
@@ -72,18 +73,14 @@ function App() {
       const result = await checkerFunction({ "thing": name, "x": xy.x, "y": xy.y, "img": selectedImage });
       setBoxOpen(false);
       if (result.data.found) {
-        setFoundThings((prevState => {
-          let foundThings = [...prevState, name];
-          if (foundThings.every(thing => things.includes(thing)) && foundThings.length >= things.length) {
-            endGame();
-          }
-          return foundThings
-        }))
+        setFoundThings(prevState => [...prevState, name]);
         setFoundThingsPointList(prevState => [...prevState, screenxy]);
+        setTimeLastItem(Date.now());
       }
       setBoxOpen(false);
     }
   }
+
   // eslint-disable-next-line
   useEffect(() => { getImgNames(); }, []);
 
@@ -111,7 +108,7 @@ function App() {
     setImages(images);
     docsSnap.docs.forEach(async (img) => {
       const url = await getDownloadURL(ref(storage, img.data().URLPath));
-      preloadImage(url)
+      preloadImage(url);
     })
   }
 
@@ -130,17 +127,25 @@ function App() {
     } else {
       setGameParams((prevState) => ({ ...prevState, gameOn: true, startTime: Date.now(), gameFinished: false }));
       checkerFunction({ "thing": things[0], "x": -1, "y": -1, "img": selectedImage }).then(result => console.log("initialized"));
-      const intervalRef = setInterval(() => {
+      setIntervalRef(setInterval(() => {
         setGameParams((prevState) => ({ ...prevState, time: Date.now() - prevState.startTime }));
-      }, 750);
-      setIntervalRef(intervalRef);
+      }, 750));
       setFoundThingsPointList([]);
       setFoundThings([]);
     }
   }
+  
+  useEffect(()=>{
+    if (things.length > 0) {
+    if (foundThings.every(thing => things.includes(thing)) && foundThings.length >= things.length) {
+      endGame();
+    }
+    // eslint-disable-next-line
+  }}, [foundThings]);
+  
 
   function endGame() {
-    setGameParams((prevState) => ({ startTime: 0, gameOn: false, time: Date.now() - prevState.startTime, gameFinished: true }));
+    setGameParams((prevState) => ({ startTime: 0, gameOn: false, time: timeLastItem - prevState.startTime, gameFinished: true }));
     clearInterval(intervalRef);
   }
 
@@ -169,7 +174,7 @@ function App() {
     setName(name);
   }
 
-  async function saveTime(event) {
+  async function saveTime() {
     if (gameParams.time > 0) {
       if (selectedImageWinners.every(winner => winner.name !== name)) {
         const docRef = doc(db, "Imgs", selectedImage);
@@ -204,7 +209,6 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
 
