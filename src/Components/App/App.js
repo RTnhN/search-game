@@ -21,7 +21,6 @@ function App() {
 
   const [img, setImg] = useState("");
   const [xy, setxy] = useState({ x: 0, y: 0 });
-  const [screenxy, setScreenxy] = useState({ x: 0, y: 0 });
   const [boxLoc, setBoxLoc] = useState({ top: 0, left: 0 });
   const [gameParams, setGameParams] = useState({ gameOn: false, startTime: 0, time: 0, gameFinished: false });
   const [things, setThings] = useState([]);
@@ -46,7 +45,6 @@ function App() {
       const x = (event.pageX - boundingRect.left - window.scrollX) / (boundingRect.width);
       const y = (event.pageY - boundingRect.top - window.scrollY) / (boundingRect.height);
       setxy({ x: x, y: y });
-      setScreenxy({ x: event.pageX, y: event.pageY });
       const longestThing = things.reduce((prev, curr) => curr.length > prev.length ? curr : prev)
       let sideFactor = 10;
       if (x * boundingRect.width > boundingRect.width - longestThing.length * 10) {
@@ -73,8 +71,9 @@ function App() {
       const result = await checkerFunction({ "thing": name, "x": xy.x, "y": xy.y, "img": selectedImage });
       setBoxOpen(false);
       if (result.data.found) {
+        const percentxy = {x:Math.floor(xy.x*100), y:Math.floor(xy.y*100)}
         setFoundThings(prevState => [...prevState, name]);
-        setFoundThingsPointList(prevState => [...prevState, screenxy]);
+        setFoundThingsPointList(prevState => [...prevState, percentxy]);
         setTimeLastItem(Date.now());
       }
       setBoxOpen(false);
@@ -198,12 +197,10 @@ function App() {
           ? <p>Welcome to search game! The goal of the game is to find all the things in the image the fastest. Select an image on the left sidebar to get started. </p>
           : <img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn || gameParams.gameFinished ? "App-header" : "App-header blur"} />
         }
+        {foundThingsPointList.map((point, index) => <p className="guessPoint" key={index} style={{ top: `${point.y}%`, left: `${point.x}%` }} data-text={foundThings[index]}>✔</p>)}
       </div>
       {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} className={gameParams.gameOn || gameParams.gameFinished ? "" : "blurText"} winners={selectedImageWinners} />}
       {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} selectedImage={selectedImage} />}
-      <div id="foundThingsMarkerContainer">
-        {foundThingsPointList.map((point, index) => <p key={index} style={{ top: point.y - 24, left: point.x - 12 }} data-text={foundThings[index]}>✔</p>)}
-      </div>
       {boxOpen && <SelectionBox loc={boxLoc} things={things} foundThings={foundThings} checkGuess={checkGuess} />}
       <GameStatusBar handleMainButtonClick={handleMainButtonClick} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
     </div>

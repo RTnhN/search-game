@@ -4,11 +4,12 @@
   width: 100%;
   min-height: 100vh;
   grid-template-columns: auto 1fr auto;
-  grid-template-rows: max-content auto auto;
+  grid-template-rows: max-content 2rem max-content auto;
   grid-template-areas:
     "header header header"
     "ImagesSidebar gameStatusBar thingsSidebar"
-    "ImagesSidebar main thingsSidebar";
+    "ImagesSidebar main thingsSidebar"
+    "ImagesSidebar . thingsSidebar";
 }
 
 /* Header */
@@ -240,7 +241,7 @@ justify-self: center;
   grid-area: main;
   width: 100%;
   overflow: hidden;
-  min-height: 100vh;
+  position: relative;
 }
 
 #imgContainer>img {
@@ -284,7 +285,7 @@ justify-self: center;
   transform: scale(1.03);
 }
 
-#foundThingsMarkerContainer>p {
+#imgContainer>p.guessPoint {
   position: absolute;
   font-size: 2rem;
   color: white;
@@ -292,7 +293,7 @@ justify-self: center;
   user-select: none;
 }
 
-#foundThingsMarkerContainer>p:hover::after {
+#imgContainer>p.guessPoint:hover::after {
   content: attr(data-text);
   font-size: 1rem;
   position: relative;
