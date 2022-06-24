@@ -57,7 +57,7 @@ header>button:hover {
   grid-area: ImagesSidebar;
   background-color: hsl(0, 0%, 50%);
   height: 100%;
-  width: 12rem;
+  width:12rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -95,7 +95,19 @@ header>button:hover {
 #thingsSidebar {
   grid-area: thingsSidebar;
   background-color: hsl(0, 0%, 50%);
-  width: 12rem;
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width:17rem;
+
+}
+
+#thingsSidebarContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 #thingsSidebarContainer p {
@@ -103,12 +115,16 @@ header>button:hover {
   font-size: 1.5rem;
 }
 
+
+
 #thingsSidebarContainer>#winnerTitle {
   font-weight: bold;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  width:10rem;
+  color: white;
+  font-size: 1.5rem;
 }
 
 
@@ -135,19 +151,12 @@ header>button:hover {
   margin: .5rem 0rem;
 }
 
-#thingsSidebarContainer>#winnerTitle {
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
 #thingsSidebarContainer>.winner{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  width:12rem;
 }
 
 .blurText {

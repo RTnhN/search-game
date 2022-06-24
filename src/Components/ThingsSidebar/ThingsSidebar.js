@@ -29,7 +29,7 @@ function ThingsSidebar(props) {
           }
         })
         }
-        {thingsWindowType === "winners" && <p id="winnerTitle"><span>Name</span><span>Time</span></p>}
+        {thingsWindowType === "winners" && <div id="winnerTitle"><span>Name</span><span>Time</span></div>}
         { thingsWindowType === "winners" &&
         props.winners.map((winner) => {
           return <p className ="winner" key={nanoid()}><span className="winnerName">{winner.name}</span><span className="winnerTime">{secToFormatTime(winner.time)}</span></p>;
