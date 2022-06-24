@@ -20,13 +20,12 @@ const checkerFunction = httpsCallable(functions, 'helloWorld');
 function App() {
   const [img, setImg] = useState("");
   const [xy, setxy] = useState({ x: 0, y: 0 });
-  const [boxLoc, setBoxLoc] = useState({ top: 0, left: 0 });
   const [gameParams, setGameParams] = useState({ gameOn: false, startTime: 0, time: 0, gameFinished: false });
   const [things, setThings] = useState([]);
   const [foundThings, setFoundThings] = useState([]);
   const [foundThingsPointList, setFoundThingsPointList] = useState([]);
   const [remainingThings, setRemainingThings] = useState([]);
-  const [boxOpen, setBoxOpen] = useState(false);
+  const [boxParams, setBoxParams] = useState({open:false, maxAngle:360, minAngle:0, loc: { top: 0, left: 0 }});
   const [imagesOpen, setImagesOpen] = useState(false);
   const [thingsOpen, setThingsOpen] = useState(false);
   const [images, setImages] = useState([]);
@@ -39,18 +38,19 @@ function App() {
 
   function openMenu(event) {
     if (gameParams.gameOn) {
-      setBoxOpen(true);
       const target = event.target;
       const boundingRect = target.getBoundingClientRect();
       const x = (event.pageX - boundingRect.left - window.scrollX) / (boundingRect.width);
       const y = (event.pageY - boundingRect.top - window.scrollY) / (boundingRect.height);
       setxy({ x: x, y: y });
-      const longestThing = things.reduce((prev, curr) => curr.length > prev.length ? curr : prev)
-      let sideFactor = 10;
-      if (x * boundingRect.width > boundingRect.width - longestThing.length * 10) {
-        sideFactor = -(longestThing.length * 10 + 20)
-      }
-      setBoxLoc({ left: event.pageX + sideFactor, top: event.pageY });
+      const MAX_FACTOR = .85;
+      const MIN_FACTOR = .15;
+      const xTooBig = Math.floor(x/MAX_FACTOR);
+      const yTooBig = Math.floor(y/MAX_FACTOR);
+      const xTooSmall = Math.floor((1-x)/(1-MIN_FACTOR))
+      const yTooSmall = Math.floor((1-y)/(1-MIN_FACTOR))
+      const minMaxAngles = truthTable[`${xTooBig}_${yTooBig}_${xTooSmall}_${yTooSmall}`];
+      setBoxParams(prevState => ({...prevState, open:true, ...minMaxAngles, loc: { left: event.pageX, top: event.pageY } }))
     }
   }
 
@@ -61,7 +61,7 @@ function App() {
     const x = (event.pageX - boundingRect.left - window.scrollX) / (boundingRect.width);
     const y = (event.pageY - boundingRect.top - window.scrollY) / (boundingRect.height);
     if (Math.sqrt((x - xy.x) ** 2 + (y - xy.y) ** 2) > FENCE_RADIUS && target.parentElement !== document.getElementById("selectionBox")) {
-      setBoxOpen(false);
+      setBoxParams(prevState => ({...prevState, open:false}))
     }
   }
 
@@ -69,7 +69,7 @@ function App() {
     const name = event.target.dataset.name;
     if (!foundThings.includes(name)) {
       const result = await checkerFunction({ "thing": name, "x": xy.x, "y": xy.y, "img": selectedImage });
-      setBoxOpen(false);
+      setBoxParams(prevState => ({...prevState, open:false}))
       if (result.data.found) {
         const percentxy = {x:Math.floor(xy.x*100), y:Math.floor(xy.y*100)}
         setFoundThings(prevState => [...prevState, name]);
@@ -77,7 +77,7 @@ function App() {
         setFoundThingsPointList(prevState => [...prevState, percentxy]);
         setTimeLastItem(Date.now());
       }
-      setBoxOpen(false);
+      setBoxParams(prevState => ({...prevState, open:false}))
     }
   }
 
@@ -99,6 +99,7 @@ function App() {
     setFoundThingsPointList([]);
     setFoundThings([]);
     setGameParams({ startTime: 0, gameOn: false, time: 0, gameFinished: false });
+    clearInterval(intervalRef);
   }
 
   async function getImgNames() {
@@ -155,6 +156,7 @@ function App() {
     clearInterval(intervalRef);
     setFoundThingsPointList([]);
     setFoundThings([]);
+    setRemainingThings(things);
   }
 
   function toggleImages() {
@@ -198,7 +200,7 @@ function App() {
       </div>
       {thingsOpen && <ThingsSidebar things={things} foundThings={foundThings} startGame={startGame} gameParams={gameParams} className={gameParams.gameOn || gameParams.gameFinished ? "" : "blurText"} winners={selectedImageWinners} />}
       {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} selectedImage={selectedImage} />}
-      {boxOpen && <SelectionBox loc={boxLoc} remainingThings={remainingThings} checkGuess={checkGuess} />}
+      {boxParams.open && <SelectionBox boxParams={boxParams} remainingThings={remainingThings} checkGuess={checkGuess} />}
       <GameStatusBar handleMainButtonClick={handleMainButtonClick} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
     </div>
   );
@@ -211,4 +213,15 @@ function preloadImage(url) {
 
 export default App;
 
+const truthTable = {
+  "0_0_0_0":{maxAngle:360, minAngle:0},
+"0_0_0_1":{maxAngle:360, minAngle:180},
+"0_0_1_0":{maxAngle:90, minAngle:-90},
+"0_0_1_1":{maxAngle:270, minAngle:360},
+"0_1_0_0":{maxAngle:0, minAngle:180},
+"0_1_1_0":{maxAngle:0, minAngle:90},
+"1_0_0_0":{maxAngle:270, minAngle:90},
+"1_0_0_1":{maxAngle:270, minAngle:180},
+"1_1_0_0":{maxAngle:180, minAngle:90}
+}
 

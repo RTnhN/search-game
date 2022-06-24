@@ -274,11 +274,14 @@ justify-self: center;
   border: 1px solid black;
   outline: none;
   color: black;
-  font-size: 2rem;
+  font-size: 1rem;
   transform: translate(-50%) rotate(calc(-1*var(--angle))) translateX(100px) rotate(calc(var(--angle)));
+  padding: .5em;
 }
 #selectionBox>button:hover {
-z-index: 100;
+  z-index: 1;
+  background-color: #b94343;
+  color: white;
 }
 
 .found {
@@ -313,8 +316,8 @@ z-index: 100;
     border: 1px solid black;
     outline: none;
     color: black;
-    font-size: 1rem;
-    transform: translate(-50%) rotate(calc(-1*var(--angle))) translateX(30px) rotate(calc(var(--angle)));
+    font-size: .5rem;
+    transform: translate(-50%) rotate(calc(-1*var(--angle))) translateX(50px) rotate(calc(var(--angle)));
   }
   
 }
