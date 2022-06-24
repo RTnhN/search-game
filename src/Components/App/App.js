@@ -55,7 +55,7 @@ function App() {
   }
 
   function mouseMove(event) {
-    const FENCE_RADIUS = .2;
+    const FENCE_RADIUS = .3;
     const target = event.target;
     const boundingRect = target.getBoundingClientRect();
     const x = (event.pageX - boundingRect.left - window.scrollX) / (boundingRect.width);
