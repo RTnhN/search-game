@@ -131,7 +131,7 @@ function App() {
       checkerFunction({ "thing": things[0], "x": -1, "y": -1, "img": selectedImage }).then(result => console.log("initialized"));
       setIntervalRef(setInterval(() => {
         setGameParams((prevState) => ({ ...prevState, time: Date.now() - prevState.startTime }));
-      }, 750));
+      }, 1000));
       setFoundThingsPointList([]);
       setFoundThings([]);
     }
