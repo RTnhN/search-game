@@ -214,7 +214,8 @@ function preloadImage(url) {
 export default App;
 
 const truthTable = {
-  "0_0_0_0":{maxAngle:360, minAngle:0},
+//Right_Bottom_Left_Top
+"0_0_0_0":{maxAngle:360, minAngle:0},
 "0_0_0_1":{maxAngle:360, minAngle:180},
 "0_0_1_0":{maxAngle:90, minAngle:-90},
 "0_0_1_1":{maxAngle:270, minAngle:360},
