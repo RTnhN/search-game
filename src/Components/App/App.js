@@ -139,7 +139,7 @@ function App() {
   
   useEffect(()=>{
     if (things.length > 0) {
-    if (foundThings.every(thing => things.includes(thing)) && foundThings.length >= things.length) {
+    if (things.every(thing => foundThings.includes(thing)) && foundThings.length >= things.length) {
       endGame();
     }
     // eslint-disable-next-line
