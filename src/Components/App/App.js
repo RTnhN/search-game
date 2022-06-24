@@ -106,7 +106,7 @@ function App() {
     const collectionRef = collection(db, "Imgs");
     const docsSnap = await getDocs(collectionRef);
     setDocsSnapshot(docsSnap);
-    const images = docsSnap.docs.map(img => img.id);
+    const images = docsSnap.docs.map(img => ({name:img.id, thingsNum: img.data().things.length}));
     setImages(images);
     docsSnap.docs.forEach(async (img) => {
       const url = await getDownloadURL(ref(storage, img.data().URLPath));

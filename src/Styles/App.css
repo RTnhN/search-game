@@ -79,6 +79,7 @@ header>button:hover {
   color: white;
   padding: .5em 1em;
   margin: .5rem 0rem;
+  width: 10rem;
 }
 
 #imagesSidebar button.active {
