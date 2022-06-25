@@ -30,7 +30,7 @@ function App() {
   const [thingsOpen, setThingsOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
-  const [name, setName] = useState("Enter Name Here");
+  const [name, setName] = useState("Name");
   const [intervalRef, setIntervalRef] = useState(null);
   const [docsSnapshot, setDocsSnapshot] = useState(null);
   const [selectedImageWinners, setSelectedImageWinners] = useState([]);
