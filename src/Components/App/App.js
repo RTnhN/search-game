@@ -92,6 +92,7 @@ function App() {
       const data = docSnap.data();
       const url = await getDownloadURL(ref(storage, data.URLPath));
       setImg(url);
+      checkerFunction({ "thing": data.things[0].name, "x": -1, "y": -1, "img": docSnap.id }).then(result => console.log("initialized"));
       setThings(data.things.map(thing => thing.name));
       setRemainingThings(data.things.map(thing => thing.name));
       setSelectedImageWinners(data.winners === undefined ? [] : data.winners);
@@ -127,8 +128,8 @@ function App() {
     if (img === "") {
       alert("Please select an image before you start the game");
     } else {
-      setGameParams((prevState) => ({ ...prevState, gameOn: true, startTime: Date.now(), gameFinished: false }));
       checkerFunction({ "thing": things[0], "x": -1, "y": -1, "img": selectedImage }).then(result => console.log("initialized"));
+      setGameParams((prevState) => ({ ...prevState, gameOn: true, startTime: Date.now(), gameFinished: false }));
       setIntervalRef(setInterval(() => {
         setGameParams((prevState) => ({ ...prevState, time: Date.now() - prevState.startTime }));
       }, 1000));
