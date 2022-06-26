@@ -174,7 +174,7 @@ function App() {
   }
 
   async function saveTime() {
-    if (gameParams.time > 0) {
+    if (gameParams.time > 0 && gameParams.gameFinished) {
       if (selectedImageWinners.every(winner => winner.name !== name)) {
         const docRef = doc(db, "Imgs", selectedImage);
         await updateDoc(docRef, { "winners": arrayUnion({ "name": name, "time": gameParams.time }) });
