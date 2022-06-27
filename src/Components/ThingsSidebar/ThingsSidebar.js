@@ -31,7 +31,7 @@ function ThingsSidebar(props) {
         }
         {thingsWindowType === "winners" && <div id="winnerTitle"><span>Name</span><span>Time</span></div>}
         { thingsWindowType === "winners" &&
-        props.winners.map((winner) => {
+        props.winners.sort((a,b)=>a.time-b.time).map((winner) => {
           return <p className ="winner" key={nanoid()}><span className="winnerName">{winner.name}</span><span className="winnerTime">{secToFormatTime(winner.time)}</span></p>;
         }
         )}
