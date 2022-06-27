@@ -82,7 +82,7 @@ function App() {
   }
 
   // eslint-disable-next-line
-  useEffect(() => { getImgNames(); }, []);
+  useEffect(() => { fetchData(); }, []);
 
   async function loadImage(event) {
     const imgName = event.target.dataset.name;
@@ -103,7 +103,7 @@ function App() {
     clearInterval(intervalRef);
   }
 
-  async function getImgNames() {
+  async function fetchData() {
     const collectionRef = collection(db, "Imgs");
     const docsSnap = await getDocs(collectionRef);
     setDocsSnapshot(docsSnap);
@@ -186,6 +186,7 @@ function App() {
     } else {
       alert("nice try trying to save your time with zero time");
     }
+    fetchData();
   }
 
   return (
