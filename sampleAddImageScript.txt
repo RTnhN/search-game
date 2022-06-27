@@ -1,0 +1,7 @@
+const admin = require("firebase-admin");
+const serviceAccount = require("../key/adminKey.json");
+admin.initializeApp({credential:admin.credential.cert(serviceAccount)});
+const db = admin.firestore();
+const docRef = db.collection("Imgs").doc("Bookshelf");
+const data = {"URLPath": "gs://search-game-957b2.appspot.com/renee-fisher-wpMtTNPg6vk-unsplash.jpg", "things":[{"name":"Paper Ghosts","coords":{"x1":0.6928532460447354,"y1":0.1745771958537916,"x2":0.7135842880523732,"y2":0.3055100927441353}},{"name":"Raven Tower","coords":{"x1":0.9067103109656302,"y1":0.6459356246590289,"x2":0.9208947081287506,"y2":0.7652300418257865}},{"name":"Early Riser","coords":{"x1":0.40916530278232405,"y1":0.010911074740861976,"x2":0.42334969994544464,"y2":0.13966175668303327}},{"name":"The Winters","coords":{"x1":0.32405891980360063,"y1":0.4866339334424441,"x2":0.3475177304964539,"y2":0.6052009456264775}},{"name":"Armada","coords":{"x1":0.11729405346426623,"y1":0.029096199308965266,"x2":0.1320240043644299,"y2":0.14184397163120568}},{"name":"Lies","coords":{"x1":0.8379705400981997,"y1":0.7710492816875796,"x2":0.8952536824877251,"y2":0.8925259138025096}},{"name":"Paris","coords":{"x1":0.48827059465357336,"y1":0.18257865066375706,"x2":0.5450081833060556,"y2":0.3033278777959629}},{"name":"Silent Hearts","coords":{"x1":0.21167484997272232,"y1":0.17603200581923986,"x2":0.23677032187670485,"y2":0.30187306783051465}}]}
+docRef.set(data).then(resp => console.log(resp))
