@@ -195,7 +195,7 @@ function App() {
       <div id="imgContainer">
         {
         img === ""
-          ? <p>Welcome to search game! The goal of the game is to find all the things in the image the fastest. Select an image on the left sidebar to get started. </p>
+          ? <p id="placeholderText">Welcome to search game! The goal of the game is to find all the things in the image the fastest. Select an image on the left sidebar to get started. </p>
           : <img src={img} alt="game" onClick={openMenu} onMouseMove={mouseMove} className={gameParams.gameOn || gameParams.gameFinished ? "App-header" : "App-header blur"} />
         }
         {foundThingsPointList.map((point, index) => <p className="guessPoint" key={index} style={{ top: `${point.y}%`, left: `${point.x}%` }} data-text={foundThings[index]}>✔</p>)}
