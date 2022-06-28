@@ -10,6 +10,7 @@ import Header from '../Header/Header';
 import ThingsSidebar from '../ThingsSidebar/ThingsSidebar';
 import ImagesSidebar from '../ImagesSidebar/ImagesSidebar';
 import GameStatusBar from '../GameStatusBar/GameStatusBar';
+import Footer from '../Footer/Footer';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -204,6 +205,7 @@ function App() {
       {imagesOpen && <ImagesSidebar images={images} loadImage={loadImage} selectedImage={selectedImage} />}
       {boxParams.open && <SelectionBox boxParams={boxParams} remainingThings={remainingThings} checkGuess={checkGuess} />}
       <GameStatusBar handleMainButtonClick={handleMainButtonClick} gameParams={gameParams} name={name} updateName={updateName} saveTime={saveTime} />
+      <Footer/>
     </div>
   );
 }

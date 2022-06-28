@@ -5,12 +5,14 @@
   background-color: gray;
   min-height: 100vh;
   grid-template-columns: auto 1fr auto;
-  grid-template-rows: max-content 4rem max-content auto;
+  grid-template-rows: max-content 4rem auto 1fr max-content;
   grid-template-areas:
     "header header header"
     "ImagesSidebar gameStatusBar thingsSidebar"
     "ImagesSidebar main thingsSidebar"
-    "ImagesSidebar . thingsSidebar";
+    "ImagesSidebar . thingsSidebar"
+    "Footer Footer Footer";
+
 }
 
 /* Header */
@@ -331,6 +333,20 @@ justify-self: center;
   position: relative;
   top: -.5rem;
   user-select: none;
+}
+
+footer{
+  grid-area: Footer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #b94343;
+}
+
+footer>p{
+  color: white;
+  padding: .5em 1em;
 }
 
 @media screen and (max-width: 500px) {
