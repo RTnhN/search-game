@@ -3,10 +3,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 const db = admin.firestore();
 
-// Create and Deploy Your First Cloud Functions
-// https://firebase.google.com/docs/functions/write-firebase-functions
-
-exports.helloWorld = functions.https.onCall( async (data, context) => {
+exports.checkerFunction = functions.https.onCall( async (data, context) => {
   const allItemData = await db.collection("Imgs").doc(data.img).get();
   const itemData = allItemData.data().things
       .find((thing) => thing.name === data.thing);

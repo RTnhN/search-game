@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const functions = getFunctions(app);
-const checkerFunction = httpsCallable(functions, 'helloWorld');
+const checkerFunction = httpsCallable(functions, 'checkerFunction');
 
 function App() {
   const [img, setImg] = useState("");
